@@ -15,6 +15,18 @@ class PhoneBook extends Component {
     items: [...items],
     filter: '',
   };
+  componentDidMount() {
+    const items = JSON.parse(localStorage.getItem('my-contacts'));
+    if (items && items.length) {
+      this.setState({ items });
+    }
+  }
+  componentDidUpdate(prevProps, prevState) {
+    const { items } = this.state;
+    if (prevState.items.length !== items.length) {
+      localStorage.setItem('my-contacts', JSON.stringify(items));
+    }
+  }
   removeContact = id => {
     this.setState(({ items }) => {
       const NewContacts = items.filter(item => item.id !== id);
